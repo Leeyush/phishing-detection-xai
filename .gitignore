@@ -1,0 +1,21 @@
+# Data
+*.csv
+processed_data/
+corpus/
+
+# Model checkpoints (large binary files — don't commit these to Git)
+checkpoints/
+baselines/*.pkl
+
+# Figures generated at runtime (kept out of version control; regenerate via src/step5_xai.py)
+figures/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+.env
+
+# OS
+.DS_Store
