@@ -27,13 +27,14 @@ Four models trained on the same preprocessed dataset and evaluated on an identic
 | SVM (TF-IDF baseline) | 99.38% | 99.11% | 99.65% | 99.38% | 0.9995 |
 | Random Forest (TF-IDF baseline) | 98.41% | 97.30% | 99.59% | 98.43% | 0.9980 |
 
-On this dataset the classical TF-IDF baselines are competitive with — and on raw accuracy, slightly ahead of — the fine-tuned transformers. That's a genuinely useful finding on its own: it means the real value-add of the transformer branch here isn't a big accuracy jump, it's that **fine-tuned transformers are the only branch that supports word-level explanations via SHAP/LIME**, which a TF-IDF + SVM pipeline can't offer in the same way.
+On this dataset, the classical TF-IDF baselines are competitive with — and, on raw accuracy, slightly ahead of — the fine-tuned transformers. That's a genuinely useful finding on its own: it means the real value-add of the transformer branch here isn't a big accuracy jump, it's that **fine-tuned transformers are the only branch that supports word-level explanations via SHAP/LIME**, which a TF-IDF + SVM pipeline can't offer in the same way.
 
 ### Explainability findings
 
-- SHAP and LIME independently converge on the same core phishing vocabulary (*"verify"*, *"account"*, *"password"*, *"urgent"*, *"suspended"*) — evidence the models are keying off genuinely suspicious language rather than spurious correlations.
-- A LIME stability test (5 repeated runs per email) shows RoBERTa produces more consistent top-5 explanations (82% mean token appearance rate) than BERT (68%) — a practical, non-qualitative signal for choosing a base classifier when explanation stability matters for deployment.
-- Where SHAP and LIME *disagree* is itself informative: cases of low cross-method agreement are proposed here as a simple, zero-additional-training triage rule (green/amber/red) for routing predictions to human review.
+- SHAP's token-level breakdown of a representative predicted-phishing email highlights bulk-email marketing/solicitation vocabulary — *"advertising," "promote," "business," "marketing," "email addresses," "million," "low [cost]"* — showing the model is picking up on recognisable spam-solicitation phrasing rather than superficial artefacts.
+- LIME's aggregated top-15 tokens across predictions is a more varied mix, pulling in vocabulary from what looks like more than one scam sub-type in the dataset (e.g. *"webcam," "free," "click"*, alongside marketing terms) — evidence the model has learned signal from multiple phishing patterns rather than overfitting to a single template.
+- A LIME stability test (5 independent runs on the same email) found top-5 explanation consistency was actually **low for both models** — 12% mean token overlap for RoBERTa vs. 22% for BERT — meaning a single LIME run shouldn't be taken at face value. The one standout exception was the token *"advertising,"* which appeared in 80% of RoBERTa's runs and 60% of BERT's, suggesting some features are reliably salient even when most aren't.
+- This instability result is arguably the more important finding here: it's a concrete argument for always repeating/aggregating XAI explanations before trusting them operationally, rather than treating a single SHAP or LIME run as ground truth.
 
 ## Pipeline
 
