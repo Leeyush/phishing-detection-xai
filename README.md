@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C.svg?logo=pytorch&logoColor=white)
 ![Transformers](https://img.shields.io/badge/🤗%20Transformers-HF-yellow.svg)
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Leeyush/phishing-detection-xai/blob/main/notebooks/PhishingDetection_Code.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Leeyush/phishing-detection-xai/blob/main/PhishingDetection_Code.ipynb)
 
 Fine-tuned BERT and RoBERTa classifiers for phishing email detection, paired with **SHAP** and **LIME** to explain individual predictions at the token level — plus a cross-method agreement analysis that turns explanation stability into a usable triage signal. Built as a final-year Cyber Security project at the University of Derby.
 
@@ -14,9 +14,9 @@ Fine-tuned BERT and RoBERTa classifiers for phishing email detection, paired wit
 
 | SHAP token importance | LIME feature importance | LIME stability across runs |
 |---|---|---|
-| ![SHAP](docs/images/shap_tokens.png) | ![LIME](docs/images/lime_bar.png) | ![Stability](docs/images/lime_stability.png) |
+| ![SHAP](images/shap_tokens.png) | ![LIME](images/lime_bar.png) | ![Stability](images/lime_stability.png) |
 
-*(Drop your generated PNGs from `figures/` into `docs/images/` with these filenames once you've run the notebook — see [note below](#adding-your-own-run-screenshots).)*
+*(Run the notebook, then upload the three generated PNGs into an `images/` folder in this repo with these filenames — see [note below](#adding-your-own-run-screenshots).)*
 
 Four models trained on the same preprocessed dataset and evaluated on an identical held-out test set (2,000 emails, stratified 50/50 split):
 
@@ -52,20 +52,16 @@ raw emails (Enron + phishing corpus)
   step5_xai.py            → SHAP + LIME explanations, stability analysis
 ```
 
-## Repo structure
+## Repo contents
 
 ```
 .
-├── src/
-│   ├── step2_preprocess.py           # cleaning, labelling, class balancing, train/val/test split
-│   ├── step3_train_transformers.py   # BERT + RoBERTa fine-tuning (HF Trainer API)
-│   ├── step4_baselines.py            # TF-IDF + SVM / Random Forest baselines
-│   └── step5_xai.py                  # SHAP + LIME explanations and stability testing
-├── notebooks/
-│   └── PhishingDetection_Code.ipynb  # end-to-end Colab notebook wrapping all four stages
-├── docs/
-│   ├── SETUP.md                      # full setup and run instructions
-│   └── images/                       # results screenshots (see below)
+├── step2_preprocess.py           # cleaning, labelling, class balancing, train/val/test split
+├── step3_train_transformers.py   # BERT + RoBERTa fine-tuning (HF Trainer API)
+├── step4_baselines.py            # TF-IDF + SVM / Random Forest baselines
+├── step5_xai.py                  # SHAP + LIME explanations and stability testing
+├── PhishingDetection_Code.ipynb  # end-to-end Colab notebook wrapping all four stages
+├── SETUP.md                      # full setup and run instructions
 ├── requirements.txt
 └── LICENSE
 ```
@@ -78,7 +74,7 @@ cd phishing-detection-xai
 pip install -r requirements.txt
 ```
 
-Then follow [`docs/SETUP.md`](docs/SETUP.md) for dataset download and step-by-step run instructions (designed for Google Colab's free T4 GPU tier, ~1.5–2 hours end to end) — or just click the "Open in Colab" badge above.
+Then follow [`SETUP.md`](SETUP.md) for dataset download and step-by-step run instructions (designed for Google Colab's free T4 GPU tier, ~1.5–2 hours end to end) — or just click the "Open in Colab" badge above.
 
 ## Tech stack
 
@@ -92,15 +88,11 @@ Then follow [`docs/SETUP.md`](docs/SETUP.md) for dataset download and step-by-st
 
 ## Adding your own run screenshots
 
-Run the notebook once (see Quickstart) and it'll write three PNGs to `figures/`. Copy them into `docs/images/` with these names so they show up above:
+Run the notebook once (see Quickstart) and it'll write three PNGs to `figures/`. Create an `images/` folder in this repo and upload them with these names so they show up above:
 
-```bash
-mkdir -p docs/images
-cp figures/figure2_shap_tokens.png    docs/images/shap_tokens.png
-cp figures/figure3_lime_bar.png       docs/images/lime_bar.png
-cp figures/figure4_lime_stability.png docs/images/lime_stability.png
-git add docs/images && git commit -m "Add results screenshots" && git push
-```
+- `images/shap_tokens.png`
+- `images/lime_bar.png`
+- `images/lime_stability.png`
 
 ## License
 
